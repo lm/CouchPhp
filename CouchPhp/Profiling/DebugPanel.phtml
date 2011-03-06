@@ -1,0 +1,58 @@
+<?php
+/**
+ * @param float $totalTime
+ * @param array $log
+ */
+use Nette\Debug, Nette\DebugHelpers, Nette\Json;
+
+$h = function($s) {
+	return htmlspecialchars($s, ENT_QUOTES);
+};
+
+?>
+<style>
+#nette-debug-CouchPhpProfiler { max-height: 500px; overflow: auto; }
+.nette-debug-couchPhp-details-item { display: none; }
+</style>
+
+<h1>Queries: <?php echo count($log) ?>, time: <?php echo sprintf('%0.3f', $totalTime * 1000) ?> ms
+	(<?php echo $h($connection->getUri()) ?>)</h1>
+
+<div id="nette-debug-CouchPhpProfiler">
+<table>
+<?php foreach ($log as $i => $record):
+	$uri = $record[0]->uri;
+	$bLen = strlen($connection->getUri()); ?>
+<tr>
+	<th><?php echo $h($record[0]->method) ?></th>
+	<th><a href="<?php echo $h($uri) ?>"><?php echo "\xe2\x80\xa6" . $h(rawurldecode(substr($uri, $bLen))) ?></a></th>
+	<th><?php echo $h($record[1]->code) ?></th>
+	<th><?php echo sprintf('%0.3f', $record[1]->time * 1000) ?> ms</th>
+</tr>
+<tr>
+	<td colspan="4">
+	<a href="#" class="nette-toggler" rel="#nette-debug-CouchPhp-post-<?php echo $i ?>">Post data&nbsp;&#x25ba;</a>
+	<div class="nette-debug-couchPhp-details-item" id="nette-debug-CouchPhp-post-<?php echo $i ?>">
+		<?php Debug::dump(Json::decode($record[0]->postData)) ?>
+	</div>
+	</td>
+</tr>
+<tr>
+	<td colspan="4">
+	<a href="#" class="nette-toggler" rel="#nette-debug-CouchPhp-data-<?php echo $i ?>">Response data&nbsp;&#x25ba;</a>
+	<div class="nette-debug-couchPhp-details-item" id="nette-debug-CouchPhp-data-<?php echo $i ?>">
+		<?php Debug::dump(Json::decode($record[1]->body)) ?>
+	</div>
+	</td>
+</tr>
+<tr>
+	<td colspan="4">
+<?php
+	list($file, $line) = $record[2];
+	echo Debug::$editor ? "<a href=\"{$h(DebugHelpers::editorLink($file, $line))}\"" : '<span' ?> title="<?php echo $h($file) . ":$line" ?>">
+<?php echo "{$h(basename(dirname($file)) . '/' . basename($file))}:$line" . (Debug::$editor ? '</a>' : '</span>'); ?>
+
+
+<?php endforeach ?>
+</table>
+</div>

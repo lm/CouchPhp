@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit bootstrap="bootstrap.php" colors="true">
+<filter>
+	<whitelist>
+		<directory>../CouchPhp</directory>
+		<exclude>
+			<file>../CouchPhp/nette.php</file>
+			<file>../CouchPhp/Object.php</file>
+			<file>../CouchPhp/Json.php</file>
+		</exclude>
+	</whitelist>
+</filter>
+</phpunit>
