@@ -237,13 +237,17 @@ class Connection extends Object
 
 
 	/**
+	 * Shortcut for  executeRequest(createRequest(...))
 	 * @param  string
 	 * @param  string
 	 * @param  array
+	 * @param  string
 	 * @return stdClass|string
 	 */
-	private function makeRequest($method, $path = '', $query = NULL)
+	public function makeRequest($method, $path = '', $query = NULL, $postData = NULL)
 	{
-		return $this->executeRequest($this->createRequest($method, $path, $query));
+		$request = $this->createRequest($method, $path, $query);
+		$request->setPostData($postData);
+		return $this->executeRequest($request);
 	}
 }

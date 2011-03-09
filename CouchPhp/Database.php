@@ -291,7 +291,7 @@ class Database extends Object
 
 
 
-	public function makeRequest($method, $path = NULL, $query = NULL, $postData = NULL)
+	public function makeRequest($method, $path = '', $query = NULL, $postData = NULL)
 	{
 		$request = $this->createRequest($method, $path, $query);
 		$request->setPostData($postData);

@@ -36,7 +36,7 @@ class BulkDocumentTest extends TestCase
 		$this->bulkDocument->save($docs);
 		$request = $this->client->getLastRequest();
 		$this->assertSame($this->uri . '/_bulk_docs', $request->getUri());
-		$this->assertSame($request->getMethod(), 'POST');
+		$this->assertSame('POST', $request->getMethod());
 		$this->assertSame(json_encode(array('all_or_nothing' => FALSE, 'docs' => $docs)), $request->getPostData());
 	}
 

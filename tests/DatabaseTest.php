@@ -36,7 +36,7 @@ class DatabaseTest extends TestCase
 		$this->database->load('id');
 		$request = $this->client->getLastRequest();
 		$this->assertSame($this->uri . '/test/id', $request->getUri());
-		$this->assertSame($request->getMethod(), 'GET');
+		$this->assertSame('GET', $request->getMethod());
 	}
 
 
@@ -63,8 +63,8 @@ class DatabaseTest extends TestCase
 		$this->database->save($doc);
 		$request = $this->client->getLastRequest();
 		$this->assertSame($this->uri . '/test/', $request->getUri());
-		$this->assertSame($request->getMethod(), 'POST');
-		$this->assertSame($request->getPostData(), json_encode($doc));
+		$this->assertSame('POST', $request->getMethod());
+		$this->assertSame(json_encode($doc), $request->getPostData());
 	}
 
 
@@ -78,8 +78,8 @@ class DatabaseTest extends TestCase
 		$this->database->save($doc);
 		$request = $this->client->getLastRequest();
 		$this->assertSame($this->uri . '/test/id', $request->getUri());
-		$this->assertSame($request->getMethod(), 'PUT');
-		$this->assertSame($request->getPostData(), json_encode($doc));
+		$this->assertSame('PUT', $request->getMethod());
+		$this->assertSame(json_encode($doc), $request->getPostData());
 	}
 
 
@@ -104,7 +104,7 @@ class DatabaseTest extends TestCase
 	{
 		$doc = array('foo' => 'bar');
 		$this->database->save($doc);
-		$this->assertSame($this->client->getLastRequest()->getPostData(), json_encode($doc));
+		$this->assertSame(json_encode($doc), $this->client->getLastRequest()->getPostData());
 	}
 
 
@@ -116,7 +116,7 @@ class DatabaseTest extends TestCase
 	{
 		$doc = (object) array('foo' => 'bar');
 		$this->database->save($doc);
-		$this->assertSame($this->client->getLastRequest()->getPostData(), json_encode($doc));
+		$this->assertSame(json_encode($doc), $this->client->getLastRequest()->getPostData());
 	}
 
 
@@ -128,7 +128,7 @@ class DatabaseTest extends TestCase
 	{
 		$doc = array('foo' => 'bar');
 		$this->database->save(new FakeDoc($doc));
-		$this->assertSame($this->client->getLastRequest()->getPostData(), json_encode($doc));
+		$this->assertSame(json_encode($doc), $this->client->getLastRequest()->getPostData());
 	}
 
 
@@ -156,7 +156,7 @@ class DatabaseTest extends TestCase
 		$this->database->delete('id', 'rev');
 		$request = $this->client->getLastRequest();
 		$this->assertSame($this->uri . '/test/id?rev=rev', $request->getUri());
-		$this->assertSame($request->getMethod(), 'DELETE');
+		$this->assertSame('DELETE', $request->getMethod());
 	}
 
 
@@ -169,7 +169,7 @@ class DatabaseTest extends TestCase
 		$this->database->attachFileContent(array('_id' => 'id', '_rev' => 'rev'), '<?xml version="1.0" ?><el />', 'test.xml');
 		$request = $this->client->getLastRequest();
 		$this->assertSame($this->uri . '/test/id/test.xml?rev=rev', $request->getUri());
-		$this->assertSame($request->getMethod(), 'PUT');
+		$this->assertSame('PUT', $request->getMethod());
 	}
 
 
@@ -206,7 +206,7 @@ class DatabaseTest extends TestCase
 		$this->database->attachFile(array('_id' => 'id', '_rev' => 'rev'), __DIR__ . '/phpunit.xml', 'test.xml');
 		$request = $this->client->getLastRequest();
 		$this->assertSame($this->uri . '/test/id/test.xml?rev=rev', $request->getUri());
-		$this->assertSame($request->getMethod(), 'PUT');
+		$this->assertSame('PUT', $request->getMethod());
 	}
 
 
