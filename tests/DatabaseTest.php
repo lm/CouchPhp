@@ -250,6 +250,33 @@ class DatabaseTest extends TestCase
 	/**
 	 * @test
 	 */
+	public function deleteAttachmentMakesDeleteRequest()
+	{
+		$this->database->deleteAttachment(array('_id' => 'id', '_rev' => 'rev'), 'test.xml');
+		$request = $this->client->getLastRequest();
+		$this->assertSame($this->uri . '/test/id/test.xml?rev=rev', $request->getUri());
+		$this->assertSame('DELETE', $request->getMethod());
+	}
+
+
+
+	/**
+	 * @test
+	 */
+	public function loadAttachmentContentMakesGetRequest()
+	{
+		$this->database->loadAttachmentContent(array('_id' => 'id', '_rev' => 'rev'), 'test.xml');
+		$request = $this->client->getLastRequest();
+		$this->assertSame($this->uri . '/test/id/test.xml?rev=rev', $request->getUri());
+		$this->assertSame('GET', $request->getMethod());
+		$this->assertNull($request->getHeader('Accept'));
+	}
+
+
+
+	/**
+	 * @test
+	 */
 	public function prepareDocumentUsesRevisionFromExecutedRequests()
 	{
 		$request = new Request;
