@@ -47,7 +47,7 @@ class Response extends Object
 
 	public function getHeaders()
 	{
-		preg_match_all('#^([^:]+): *(.*?)\r?$#m', $this->headers, $m);
+		preg_match_all('#^([^:\n]+): *(.*?)\r?$#m', $this->headers, $m);
 		return array_combine($m[1], $m[2]);
 	}
 
