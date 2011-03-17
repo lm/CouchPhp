@@ -40,7 +40,7 @@ class Response extends Object
 
 	public function getHeader($name)
 	{
-		return preg_match('#^' . preg_quote($name, '#') . ': *(.*?)\r?$#m', $this->headers, $m) ? $m[1] : NULL;
+		return preg_match('#^' . preg_quote($name, '#') . ': *(.*?)\r?$#mi', $this->headers, $m) ? $m[1] : NULL;
 	}
 
 
