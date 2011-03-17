@@ -12,6 +12,7 @@ $h = function($s) {
 ?>
 <style>
 #nette-debug-CouchPhpProfiler { max-height: 500px; overflow: auto; }
+#nette-debug-CouchPhpProfiler b { font-weight: bold; }
 .nette-debug-couchPhp-details-item { display: none; }
 </style>
 
@@ -27,7 +28,7 @@ $h = function($s) {
 	<th><?php echo $h($record[0]->method) ?></th>
 	<th><a href="<?php echo $h($uri) ?>"><?php echo "\xe2\x80\xa6" . $h(rawurldecode(substr($uri, $bLen))) ?></a></th>
 	<th><?php echo $h($record[1]->code) ?></th>
-	<th><?php echo sprintf('%0.3f', $record[1]->time * 1000) ?> ms</th>
+	<th><?php echo sprintf('%0.3f', $record[1]->time * 1000) ?>&nbsp;ms</th>
 </tr>
 <tr>
 	<td colspan="4">
@@ -39,9 +40,12 @@ $h = function($s) {
 </tr>
 <tr>
 	<td colspan="4">
-	<a href="#" class="nette-toggler" rel="#nette-debug-CouchPhp-data-<?php echo $i ?>">Response data&nbsp;&#x25ba;</a>
+	<a href="#" class="nette-toggler" rel="#nette-debug-CouchPhp-data-<?php echo $i ?>">Response&nbsp;&#x25ba;</a>
 	<div class="nette-debug-couchPhp-details-item" id="nette-debug-CouchPhp-data-<?php echo $i ?>">
-		<?php Debug::dump(Json::decode($record[1]->body)) ?>
+		<?php foreach ($record[1]->headers as $n => $v) {
+			echo '<b>' . $h($n) . ':</b> ' . $h($v) . '<br />';
+		}
+		Debug::dump(Json::decode($record[1]->body)) ?>
 	</div>
 	</td>
 </tr>
