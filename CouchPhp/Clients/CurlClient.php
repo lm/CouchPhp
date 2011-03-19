@@ -6,6 +6,7 @@ use CouchPhp\Object,
 	CouchPhp\IClient,
 	CouchPhp\Request,
 	CouchPhp\Response,
+	CouchPhp\IProfiler,
 	CouchPhp\RequestException;
 
 
@@ -17,10 +18,15 @@ class CurlClient extends Object implements IClient
 {
 	/**
 	 * @param  Request
+	 * @param  IProfiler
 	 * @return Response
 	 */
-	public function makeRequest(Request $request)
+	public function makeRequest(Request $request, IProfiler $profiler = NULL)
 	{
+		if ($profiler !== NULL) {
+			$profiler->logRequest($request);
+		}
+
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_HEADER, TRUE);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
@@ -56,11 +62,16 @@ class CurlClient extends Object implements IClient
 		}
 
 		$hLen = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-		return new Response(
+		$response = new Response(
 			curl_getinfo($curl, CURLINFO_HTTP_CODE),
 			(string) substr($body, 0, $hLen),
 			(string) substr($body, $hLen),
 			$time
 		);
+
+		if ($profiler !== NULL) {
+			$profiler->logResponse($response);
+		}
+		return $response;
 	}
 }

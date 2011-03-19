@@ -11,8 +11,9 @@ interface IClient
 {
 	/**
 	 * @param  Request
+	 * @param  IProfiler
 	 * @return Response
 	 * @throws RequestException
 	 */
-	function makeRequest(Request $request);
+	function makeRequest(Request $request, IProfiler $profiler = NULL);
 }

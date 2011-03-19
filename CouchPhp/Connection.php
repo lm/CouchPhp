@@ -204,17 +204,9 @@ class Connection extends Object
 	 */
 	public function executeRequest(Request $request)
 	{
-		if ($this->profiler !== NULL) {
-			$this->profiler->logRequest($request);
-		}
-
-		$response = $this->client->makeRequest($request);
-
-		if ($this->profiler !== NULL) {
-			$this->profiler->logResponse($response);
-		}
-
+		$response = $this->client->makeRequest($request, $this->profiler);
 		$data = ($isJson = $response->isJson()) ? $response->getJson() : $response->getBody();
+
 		if ($request->getHeader('Accept') === 'application/json' && !$isJson) {
 			$cType = $response->getHeader('Content-Type');
 			throw new RequestException("Server returns incorrect 'Content-Type: $cType', 'application/json' was expected", 0, $request, $response);

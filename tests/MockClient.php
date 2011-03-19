@@ -4,7 +4,8 @@ namespace CouchPhp\Tests;
 
 use CouchPhp\IClient,
 	CouchPhp\Request,
-	CouchPhp\Response;
+	CouchPhp\Response,
+	CouchPhp\IProfiler;
 
 
 
@@ -28,7 +29,7 @@ class MockClient implements IClient
 	 * @param  string
 	 * @return stdClass|NULL
 	 */
-	public function makeRequest(Request $request)
+	public function makeRequest(Request $request, IProfiler $profiler = NULL)
 	{
 		$this->lastRequest = $request;
 		$time = microtime();
