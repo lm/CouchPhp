@@ -32,14 +32,10 @@ $h = function($s) {
 </tr>
 <tr>
 	<td colspan="4">
-	<a href="#" class="nette-toggler" rel="#nette-debug-CouchPhp-post-<?php echo $i ?>">Post data&nbsp;&#x25ba;</a>
-	<div class="nette-debug-couchPhp-details-item" id="nette-debug-CouchPhp-post-<?php echo $i ?>">
-		<?php Debug::dump(Json::decode($record[0]->postData)) ?>
-	</div>
-	</td>
-</tr>
-<tr>
-	<td colspan="4">
+	<?php
+	list($file, $line) = $record[2];
+	echo Debug::$editor ? "<a href=\"{$h(DebugHelpers::editorLink($file, $line))}\"" : '<span' ?> style="float: right;" title="<?php echo $h($file) . ":$line" ?>">
+	<?php echo "{$h(basename(dirname($file)) . '/' . basename($file))}:$line" . (Debug::$editor ? '</a>' : '</span>'); ?>
 	<a href="#" class="nette-toggler" rel="#nette-debug-CouchPhp-data-<?php echo $i ?>">Response&nbsp;&#x25ba;</a>
 	<div class="nette-debug-couchPhp-details-item" id="nette-debug-CouchPhp-data-<?php echo $i ?>">
 		<?php foreach ($record[1]->headers as $n => $v) {
@@ -49,14 +45,16 @@ $h = function($s) {
 	</div>
 	</td>
 </tr>
+<?php if ($record[0]->postData != '' || in_array($record[0]->method, array('POST', 'PUT'), TRUE)): ?>
 <tr>
 	<td colspan="4">
-<?php
-	list($file, $line) = $record[2];
-	echo Debug::$editor ? "<a href=\"{$h(DebugHelpers::editorLink($file, $line))}\"" : '<span' ?> title="<?php echo $h($file) . ":$line" ?>">
-<?php echo "{$h(basename(dirname($file)) . '/' . basename($file))}:$line" . (Debug::$editor ? '</a>' : '</span>'); ?>
-
-
+	<a href="#" class="nette-toggler" rel="#nette-debug-CouchPhp-post-<?php echo $i ?>">Post data&nbsp;&#x25ba;</a>
+	<div class="nette-debug-couchPhp-details-item" id="nette-debug-CouchPhp-post-<?php echo $i ?>">
+		<?php Debug::dump(Json::decode($record[0]->postData)) ?>
+	</div>
+	</td>
+</tr>
+<?php endif ?>
 <?php endforeach ?>
 </table>
 </div>
