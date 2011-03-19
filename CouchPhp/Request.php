@@ -171,4 +171,22 @@ class Request extends Object
 	{
 		return $this->file;
 	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public function isCacheable()
+	{
+		if ($this->method === 'GET') {
+			return TRUE;
+		}
+		$path = parse_url($this->getUri(), PHP_URL_PATH);
+		if ($path == '') {
+			return FALSE;
+		}
+		$path = substr($path, strpos($path, '/', 1) + 1);
+		return $path === '_all_docs' || preg_match('#_design/[^/]/_(view|list|show)/.#A', $path);
+	}
 }

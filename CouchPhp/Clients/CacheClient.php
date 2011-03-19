@@ -41,7 +41,7 @@ class CacheClient extends Object implements IClient
 	 */
 	public function makeRequest(Request $request)
 	{
-		if ($request->method !== 'GET') {
+		if (!$request->isCacheable()) {
 			return $this->client->makeRequest($request);
 		}
 

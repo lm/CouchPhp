@@ -47,9 +47,9 @@ class CurlClient extends Object implements IClient
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $request->getPostData());
 		}
 
-		$time = microtime();
+		$time = microtime(TRUE);
 		$body = curl_exec($curl);
-		$time = microtime() - $time;
+		$time = microtime(TRUE) - $time;
 
 		if ($code = curl_errno($curl)) {
 			throw new RequestException(curl_error($curl), $code, $request);
