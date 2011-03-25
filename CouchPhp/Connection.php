@@ -150,6 +150,16 @@ class Connection extends Object
 
 
 	/**
+	 * @return array	database names
+	 */
+	public function getDatabaseNames()
+	{
+		return $this->makeRequest('GET', '_all_dbs');
+	}
+
+
+
+	/**
 	 * Create new database and returns it's instance.
 	 * @param  string	database name
 	 * @return Database
