@@ -51,7 +51,7 @@ class RequestException extends RuntimeException implements IDebugPanel
 		$r = $this->request;
 		$h = function($s) { return htmlspecialchars($s, ENT_QUOTES); };
 		$s = "<p><b>Request</b></p><table><tr>"
-			. "<th>$r->method</th><td><a href=\"{$h($r->uri)}\">{$h(rawurldecode($r->uri))}</a></td></tr>"
+			. "<th>$r->method</th><td><a href=\"http://{$h($r->uri)}\">{$h(rawurldecode($r->uri))}</a></td></tr>"
 			. "<th>Headers</th><td>";
 
 		foreach ($r->getHeaders() as $n => $v) {

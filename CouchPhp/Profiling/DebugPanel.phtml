@@ -26,7 +26,7 @@ $h = function($s) {
 	$bLen = strlen($connection->getUri()); ?>
 <tr>
 	<th><?php echo $h($record[0]->method) ?></th>
-	<th><a href="<?php echo $h($uri) ?>"><?php echo "\xe2\x80\xa6" . $h(rawurldecode(substr($uri, $bLen))) ?></a></th>
+	<th><a href="http://<?php echo $h($uri) ?>"><?php echo "\xe2\x80\xa6" . $h(rawurldecode(substr($uri, $bLen))) ?></a></th>
 	<th><?php echo $h($record[1]->code) ?></th>
 	<th><?php echo sprintf('%0.3f', $record[1]->time * 1000) ?>&nbsp;ms</th>
 </tr>
