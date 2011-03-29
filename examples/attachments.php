@@ -26,4 +26,4 @@ $database->deleteAttachment($docId, 'foo.xml');
 
 
 
-//$connection->deleteDatabase($database->name);
+$connection->deleteDatabase($database->name);
