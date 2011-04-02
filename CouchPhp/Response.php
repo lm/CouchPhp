@@ -6,21 +6,38 @@ namespace CouchPhp;
 
 /**
  * Server response.
+ *
+ * @property-read int $code
+ * @property-read array $headers
+ * @property-read string $body
+ * @property-read mixed $json
+ * @property-read int $time
  */
 class Response extends Object
 {
+	/** @var int */
 	private $code;
 
+	/** @var string */
 	private $headers;
 
+	/** @var string */
 	private $body;
 
+	/** @var mixed */
 	private $json;
 
+	/** @var int */
 	private $time;
 
 
 
+	/**
+	 * @param int
+	 * @param string
+	 * @param string
+	 * @param int
+	 */
 	public function __construct($code, $headers, $body, $time)
 	{
 		$this->code = (int) $code;
@@ -31,6 +48,9 @@ class Response extends Object
 
 
 
+	/**
+	 * @return int
+	 */
 	public function getCode()
 	{
 		return $this->code;
@@ -38,6 +58,10 @@ class Response extends Object
 
 
 
+	/**
+	 * @param  string
+	 * @return string|NULL
+	 */
 	public function getHeader($name)
 	{
 		return preg_match('#^' . preg_quote($name, '#') . ': *(.*?)\r?$#mi', $this->headers, $m) ? $m[1] : NULL;
@@ -45,6 +69,9 @@ class Response extends Object
 
 
 
+	/**
+	 * @return array
+	 */
 	public function getHeaders()
 	{
 		preg_match_all('#^([^:\n]+): *(.*?)\r?$#m', $this->headers, $m);
@@ -53,6 +80,9 @@ class Response extends Object
 
 
 
+	/**
+	 * @return string
+	 */
 	public function getBody()
 	{
 		return $this->body;
@@ -60,6 +90,10 @@ class Response extends Object
 
 
 
+	/**
+	 * Returns true if response body contains JSON.
+	 * @return bool
+	 */
 	public function isJson()
 	{
 		$contentType = $this->getHeader('Content-Type');
@@ -69,6 +103,10 @@ class Response extends Object
 
 
 
+	/**
+	 * Returns decoded JSON body.
+	 * @return mixed
+	 */
 	public function getJson()
 	{
 		if ($this->json === NULL) {
@@ -79,6 +117,9 @@ class Response extends Object
 
 
 
+	/**
+	 * @return int
+	 */
 	public function getTime()
 	{
 		return $this->time;
