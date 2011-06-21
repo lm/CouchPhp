@@ -2,8 +2,8 @@
 
 namespace CouchPhp;
 
-use Nette\IDebugPanel,
-	Nette\Debug,
+use Nette\Diagnostics\IBarPanel,
+	Nette\Diagnostics\Debugger,
 	LogicException;
 
 
@@ -15,7 +15,7 @@ require_once __DIR__ . '/../nette.php'; // required by apigen
 /**
  * Nette\Debug panel.
  */
-class DebugPanel extends Object implements IProfiler, IDebugPanel
+class DebugPanel extends Object implements IProfiler, IBarPanel
 {
 	private $connection;
 
@@ -27,11 +27,11 @@ class DebugPanel extends Object implements IProfiler, IDebugPanel
 
 	public function __construct(Connection $connection)
 	{
-		if (class_exists('Nette\Debug', FALSE)) {
-			Debug::addPanel($this);
+		if (class_exists('Nette\Diagnostics\Debugger', FALSE)) {
+			Debugger::$bar->addPanel($this);
 		} else {
 			$class = get_called_class();
-			throw new LogicException("$class requires Nette\\Debug");
+			throw new LogicException("$class requires Nette\\Diagnostics\\Debugger");
 		}
 		$this->connection = $connection;
 	}

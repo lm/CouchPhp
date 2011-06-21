@@ -3,7 +3,7 @@
  * @param float $totalTime
  * @param array $log
  */
-use Nette\Debug, Nette\DebugHelpers, Nette\Json;
+use Nette\Diagnostics\Debugger, Nette\Diagnostics\Helpers, Nette\Utils\Json;
 
 $h = function($s) {
 	return htmlspecialchars($s, ENT_QUOTES);
@@ -34,14 +34,14 @@ $h = function($s) {
 	<td colspan="4">
 	<?php
 	list($file, $line) = $record[2];
-	echo Debug::$editor ? "<a href=\"{$h(DebugHelpers::editorLink($file, $line))}\"" : '<span' ?> style="float: right;" title="<?php echo $h($file) . ":$line" ?>">
-	<?php echo "{$h(basename(dirname($file)) . '/' . basename($file))}:$line" . (Debug::$editor ? '</a>' : '</span>'); ?>
+	echo Debugger::$editor ? "<a href=\"{$h(Helpers::editorLink($file, $line))}\"" : '<span' ?> style="float: right;" title="<?php echo $h($file) . ":$line" ?>">
+	<?php echo "{$h(basename(dirname($file)) . '/' . basename($file))}:$line" . (Debugger::$editor ? '</a>' : '</span>'); ?>
 	<a href="#" class="nette-toggler" rel="#nette-debug-CouchPhp-data-<?php echo $i ?>">Response&nbsp;&#x25ba;</a>
 	<div class="nette-debug-couchPhp-details-item" id="nette-debug-CouchPhp-data-<?php echo $i ?>">
 		<?php foreach ($record[1]->headers as $n => $v) {
 			echo '<b>' . $h($n) . ':</b> ' . $h($v) . '<br />';
 		}
-		Debug::dump(Json::decode($record[1]->body)) ?>
+		Debugger::dump(Json::decode($record[1]->body)) ?>
 	</div>
 	</td>
 </tr>
@@ -50,7 +50,7 @@ $h = function($s) {
 	<td colspan="4">
 	<a href="#" class="nette-toggler" rel="#nette-debug-CouchPhp-post-<?php echo $i ?>">Post data&nbsp;&#x25ba;</a>
 	<div class="nette-debug-couchPhp-details-item" id="nette-debug-CouchPhp-post-<?php echo $i ?>">
-		<?php Debug::dump(Json::decode($record[0]->postData)) ?>
+		<?php Debugger::dump(Json::decode($record[0]->postData)) ?>
 	</div>
 	</td>
 </tr>
