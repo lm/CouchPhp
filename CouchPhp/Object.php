@@ -11,7 +11,7 @@
 
 namespace CouchPhp;
 
-use MemberAccessException;
+use Nette\MemberAccessException;
 
 
 
@@ -80,7 +80,7 @@ abstract class Object
 	 * @param  string  method name
 	 * @param  array   arguments
 	 * @return mixed
-	 * @throws \MemberAccessException
+	 * @throws MemberAccessException
 	 */
 	public function __call($name, $args)
 	{
@@ -125,7 +125,7 @@ abstract class Object
 	 * @param  string  method name (in lower case!)
 	 * @param  array   arguments
 	 * @return mixed
-	 * @throws \MemberAccessException
+	 * @throws MemberAccessException
 	 */
 	public static function __callStatic($name, $args)
 	{
@@ -201,7 +201,7 @@ abstract class Object
 	 * Returns property value. Do not call directly.
 	 * @param  string  property name
 	 * @return mixed   property value
-	 * @throws \MemberAccessException if the property is not defined.
+	 * @throws MemberAccessException if the property is not defined.
 	 */
 	public function &__get($name)
 	{
@@ -239,7 +239,7 @@ abstract class Object
 	 * @param  string  property name
 	 * @param  mixed   property value
 	 * @return void
-	 * @throws \MemberAccessException if the property is not defined or is read-only
+	 * @throws MemberAccessException if the property is not defined or is read-only
 	 */
 	public function __set($name, $value)
 	{
@@ -286,7 +286,7 @@ abstract class Object
 	 * Access to undeclared property.
 	 * @param  string  property name
 	 * @return void
-	 * @throws \MemberAccessException
+	 * @throws MemberAccessException
 	 */
 	public function __unset($name)
 	{

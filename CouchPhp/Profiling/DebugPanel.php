@@ -29,6 +29,7 @@ class DebugPanel extends Object implements IProfiler, IBarPanel
 	{
 		if (class_exists('Nette\Diagnostics\Debugger', FALSE)) {
 			Debugger::$bar->addPanel($this);
+			Debugger::$blueScreen->addPanel(callback($this, 'renderException'), __CLASS__);
 		} else {
 			$class = get_called_class();
 			throw new LogicException("$class requires Nette\\Diagnostics\\Debugger");
@@ -57,6 +58,47 @@ class DebugPanel extends Object implements IProfiler, IBarPanel
 	{
 		$this->log[count($this->log) - 1][1] = $response;
 		$this->totalTime += $response->time;
+	}
+
+
+
+	public function renderException($e)
+	{
+		if ($e instanceof RequestException) {
+			return array(
+				'tab' => 'CouchPhp',
+				'panel' => $this->renderExceptionPanel($e),
+			);
+		}
+	}
+
+
+
+	public function renderExceptionPanel($e)
+	{
+		$r = $e->getRequest();
+		$h = function($s) { return htmlspecialchars($s, ENT_QUOTES); };
+		$s = "<p><b>Request</b></p><table><tr>"
+			. "<th>$r->method</th><td><a href=\"http://{$h($r->uri)}\">{$h(rawurldecode($r->uri))}</a></td></tr>"
+			. "<th>Headers</th><td>";
+
+		foreach ($r->getHeaders() as $n => $v) {
+			$s .= "<b>{$h($n)}:</b> {$h($v)}<br />";
+		}
+
+		$s .= "</td></tr><tr><th>Post data</th><td>" . Debugger::dump($r->postData, TRUE) . "</td></tr></table>";
+
+		if ($r = $e->getResponse()) {
+			$s .= "<p><b>Response</b></p><table><tr>"
+				. "<th>Headers</th><td>";
+
+			foreach ($r->getHeaders() as $n => $v) {
+				$s .= "<b>{$h($n)}:</b> {$h($v)}<br />";
+			}
+
+			$s .= "</td></tr><tr><th>Body</th><td>" . Debugger::dump($r->body, TRUE) . "</td></tr></table>";
+		}
+		return $s;
 	}
 
 
