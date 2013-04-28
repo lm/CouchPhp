@@ -89,7 +89,7 @@ abstract class BaseBulkDocument extends Object
 		if (func_num_args() > 1) {
 			$key = func_get_args();
 		}
-		$this->query['startkey'] = Json::encode($key);
+		$this->query['startkey'] = str_replace('"{}"', '{}', Json::encode($key));
 		return $this;
 	}
 
@@ -104,7 +104,7 @@ abstract class BaseBulkDocument extends Object
 		if (func_num_args() > 1) {
 			$key = func_get_args();
 		}
-		$this->query['endkey'] = Json::encode($key);
+		$this->query['endkey'] = str_replace('"{}"', '{}', Json::encode($key));
 		return $this;
 	}
 
